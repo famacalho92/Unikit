@@ -24,12 +24,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.ui.Alignment
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.unikit.ui.theme.UnikitTheme
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +52,13 @@ fun UnikitApp() {
     val navController = rememberNavController() // Crea una instancia de NavController
     NavHost(navController = navController, startDestination = "login") {
         composable("login") { LoginScreen(navController = navController) }
-        // Agrega otros composables para pantallas adicionales aquí
+        composable("menu_screen") { MenuScreen(navController = navController) }
+        composable("horario_screen") { HorarioScreen(navController = navController) }
+        composable("agenda_screen") { AgendaScreen(navController = navController) }
+        composable("cuaderno_screen") { CuadernoScreen(navController = navController) }
+        composable("ajustes_screen") { AjustesScreen(navController = navController) }
+
+
     }
 }
 
@@ -83,21 +93,170 @@ fun LoginScreen(navController: NavController) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
                         onClick = {
-                            navController.navigate("home") // Navegar a la pantalla de inicio
+                            navController.navigate("menu_screen") // navigate to home screen (original behavior)
                         }
                     ) {
                         Text("Iniciar sesión")
                     }
+
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    UnikitTheme {
-        LoginScreen(navController = rememberNavController())
+fun MenuScreen(navController: NavController) {
+    // ... Add your desired UI elements for the new screen here ...
+
+    // Example content:
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = "This is the new screen content")
+            Button(
+                onClick = {
+                    navController.navigate("horario_screen") // Handle button click on new screen (optional)
+                }
+            ) {
+                Text("Horario de Clases ")
+            }
+            Button(
+                onClick = {
+                    navController.navigate("agenda_screen")   // Handle button click on new screen (optional)
+                }
+            ) {
+                Text("Agenda")
+            }
+            Button(
+                onClick = {
+                    navController.navigate("cuaderno_screen")  // Handle button click on new screen (optional)
+                }
+            ) {
+                Text("Cuaderno")
+            }
+            Button(
+                onClick = {
+                    navController.navigate("ajustes_screen")  // Handle button click on new screen (optional)
+                }
+            ) {
+                Text("Ajustes")
+            }
+            Button(
+                onClick = {
+                    navController.navigate("LoginScreen")   // Handle button click on new screen (optional)
+                }
+            ) {
+                Text("Cerrar sesión")
+            }
+        }
     }
 }
+@Composable
+fun HorarioScreen(navController: NavController) {
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Horario de Clases", style = MaterialTheme.typography.headlineMedium)
+            Spacer(modifier = Modifier.height(16.dp))
+            // Bucle para mostrar las horas de clase
+            for (franjaHoraria in obtenerHorario()) {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(text = franjaHoraria.first, style = MaterialTheme.typography.bodyMedium)
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(text = franjaHoraria.second, style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        }
+    }
+}
+
+// Función para definir el horario de clases
+private fun obtenerHorario(): List<Pair<String, String>> {
+    val dias = listOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes")
+    val duracionClase = 2 // Horas
+
+    return dias.flatMap { dia ->
+        listOf(
+            Pair("$dia 7:00 AM", "$dia ${7 + duracionClase}:00 AM"),  // Lunes 7:00 AM - 9:00 AM
+            Pair("$dia ${7 + duracionClase}:00 AM", "$dia ${7 + 2 * duracionClase}:00 AM"), // Lunes 9:00 AM - 11:00 AM
+            Pair("$dia ${7 + 2 * duracionClase}:00 PM", "$dia ${7 + 3 * duracionClase}:00 PM"), // Lunes 2:00 PM - 4:00 PM
+            Pair("$dia ${7 + 3 * duracionClase}:00 PM", "$dia ${7 + 4 * duracionClase}:00 PM"), // Lunes 4:00 PM - 6:00 PM
+            Pair("$dia ${7 + 4 * duracionClase}:00 PM", "$dia 8:00 PM"),  // Lunes 6:00 PM - 8:00 PM
+        )
+    }
+}
+@Composable
+fun AgendaScreen(navController: NavController) {
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Agenda Diaria", style = MaterialTheme.typography.headlineMedium)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Display agenda items
+            for (agendaItem in getAgenda()) {
+                AgendaItem(agendaItem = agendaItem)
+            }
+        }
+    }
+}
+
+// Define the data structure for an agenda item
+data class AgendaItem(val time: String, val title: String, val details: String? = null)
+
+// Function to define the sample daily agenda
+private fun getAgenda(): List<AgendaItem> {
+    return listOf(
+        AgendaItem("7:00 AM", "Clases","Calculo3"),
+        AgendaItem("9:00 AM", "Clases", "Aplimovil"),
+        AgendaItem("11:30 AM", "Clases", "Laboratorio Serv Tel"),
+        AgendaItem("1:00 PM", "Receso"),
+        AgendaItem("2:00 PM", "Clases", "Laboratorio Sist Tel"),
+        AgendaItem("4:00 PM", "Estudio individual"),
+        AgendaItem("6:00 PM", "Receso"),
+        AgendaItem("7:00 PM", "Redes"),
+        AgendaItem("9:00 PM", "Tiempo libre"),
+
+        )
+}
+
+// Composable for displaying a single agenda item
+@Composable
+fun AgendaItem(agendaItem: AgendaItem) {
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Text(text = agendaItem.time, style = MaterialTheme.typography.bodyMedium)
+        Spacer(modifier = Modifier.weight(1f))
+        Column {
+            Text(text = agendaItem.title, style = MaterialTheme.typography.bodyMedium)
+            if (agendaItem.details != null) {
+                // Importa el estilo caption
+                Text(text = agendaItem.details, style = MaterialTheme.typography.bodyLarge)
+            }
+        }
+    }
+    Divider(modifier = Modifier.fillMaxWidth())
+}
+@Composable
+fun CuadernoScreen(navController: NavController) {
+
+}
+@Composable
+fun AjustesScreen(navController: NavController) {
+
+}
+
