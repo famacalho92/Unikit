@@ -25,13 +25,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialThemeimport androidx.compose.material3.Typography
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.ui.Alignment
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.unikit.ui.theme.UnikitTheme
-
 
 
 class MainActivity : ComponentActivity() {
@@ -117,7 +117,9 @@ fun MenuScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "This is the new screen content")
+            Text(text = "Unikit")
+            Text(text = "Universidad del Cauca Kit")
+
             Button(
                 onClick = {
                     navController.navigate("horario_screen") // Handle button click on new screen (optional)
@@ -256,6 +258,79 @@ fun CuadernoScreen(navController: NavController) {
 }
 @Composable
 fun AjustesScreen(navController: NavController) {
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = "Ajustes Unikit ")
+            Text(text = "Seguridad")
 
+            Button(
+                onClick = {
+                    navController.navigate("horario_screen") // Handle button click on new screen (optional)
+                }
+            ) {
+                Text("Cambiar contraseña")
+            }
+            Button(
+                onClick = {
+                    navController.navigate("agenda_screen")   // Handle button click on new screen (optional)
+                }
+            ) {
+                Text("Usar Huella para Ingresar")
+            }
+            Text(text = "Notificaciones")
+            Button(
+                onClick = {
+                    navController.navigate("cuaderno_screen")  // Handle button click on new screen (optional)
+                }
+            ) {
+                Text("Notificaciones de Clases")
+            }
+            Button(
+                onClick = {
+                    navController.navigate("ajustes_screen")  // Handle button click on new screen (optional)
+                }
+            ) {
+                Text("Notificaciones de eventos")
+            }
+            Text(text = "Otros ajustes")
+            Button(
+                onClick = {
+                    navController.navigate("LoginScreen")   // Handle button click on new screen (optional)
+                }
+            ) {
+                Text("Ajustes de Idiomas")
+            }
+            Button(
+                onClick = {
+                    navController.navigate("Creditos_Screen")   // Handle button click on new screen (optional)
+                }
+            ) {
+                Text("Acerca de nosotros")
+            }
+        }
+    }
 }
 
+
+@Composable
+fun Creditos_Screen(navController: NavController) {
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = "Integrantes ")
+            Text(text = "Fausto Mauricio Calvache Hoyos famacalho@unicauca.edu.co")
+            Text(text = "Cristian Serna")
+        }
+    }
+}
